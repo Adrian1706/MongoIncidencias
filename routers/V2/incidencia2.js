@@ -47,4 +47,26 @@ incidencia2.post("/", async(req, res) => {
     }
 });
 
+incidencia2.put("/:Id_incidencia", async(req, res)=>{
+
+    const Id_incidencia = parseInt(req.params.Id_incidencia);
+    const newData = req.body; 
+
+    try {
+        const db = await conexion();
+        const incidencias = db.collection("incidencia");
+        const result = await incidencias.updateOne({ Id_incidencia }, { $set: newData });
+
+        if (result.matchedCount === 1) {
+            res.send("Incidencia actualizada correctamente");
+        } else {
+            res.status(404).send("Incidencia no encontrada");
+        }
+    } catch (error) {
+        console.error("Error al actualizar la incidencia:", error);
+        res.status(500).send("Error interno del servidor");
+    }
+
+})
+
 export default incidencia2;
