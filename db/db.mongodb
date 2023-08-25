@@ -1,4 +1,4 @@
-use("Incidencias");
+use("db_mongo_incidencias");
 
 db.trainer.insertMany([
   {
