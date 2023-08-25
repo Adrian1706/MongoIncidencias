@@ -31,7 +31,7 @@ trainer2.put("/:Id_trainer", async(req, res)=>{
     const newData = req.body; 
 
     try {
-        const db = await con();
+        const db = await conexion();
         const trainers = db.collection("trainer");
         const result = await trainers.updateOne({ Id_trainer }, { $set: newData });
 
@@ -44,6 +44,28 @@ trainer2.put("/:Id_trainer", async(req, res)=>{
         console.error("Error al actualizar el trainer:", error);
         res.status(500).send("Error interno del servidor");
     }
+});
+
+trainer2.delete("/:Id_trainer", async(req, res)=>{
+     
+    const Id_trainer = parseInt(req.params.Id_trainer);
+
+    try {
+        const db = await conexion();
+        const trainers = db.collection("trainer");
+        const result = await trainers.deleteOne({ Id_trainer });
+
+        if (result.deletedCount === 1) {
+            res.send("Trainer eliminado correctamente");
+        } else {
+            res.status(404).send("Trainer no encontrado");
+        }
+    } catch (error) {
+        console.error("Error al eliminar el trainer:", error);
+        res.status(500).send("Error interno del servidor");
+    }
+
+
 });
 
 export default trainer2;

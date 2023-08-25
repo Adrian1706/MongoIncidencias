@@ -1,7 +1,8 @@
 import dotenv from 'dotenv';
 import express from 'express';
 import versionRoutes from 'express-routes-versioning'; 
-import trainer from './routers/trainer.js';
+import trainer from './routers/V1/trainer.js';
+import trainer2 from './routers/V2/trainer2.js';
 
 dotenv.config();
 
@@ -16,6 +17,7 @@ app.use((req, res, next)=>{
 });
 app.use("/trainer", Route({
     "1.0.0": trainer,
+    "2.0.0": trainer2,
 }));
 
 let config = JSON.parse(process.env.MY_SERVER);
