@@ -1,12 +1,13 @@
 import { Router } from "express";
 import { conexion } from "../../db/atlas.js";
 import { limitGrt } from "../../limit/config.js";
+import { validarToken } from "../../limit/token.js";
 
 let trainer = Router();
 
 let db = await conexion();
 
-trainer.get("/", limitGrt(), async(req, res)=>{
+trainer.get("/trainer", limitGrt(), validarToken, async(req, res)=>{
     if(!req.rateLimit) return; 
     console.log(req.rateLimit);
     let trainers =  db.collection("trainer");
@@ -15,7 +16,7 @@ trainer.get("/", limitGrt(), async(req, res)=>{
 
 });
 
-trainer.post("/", limitGrt(), async(req, res) => {
+trainer.post("/trainer", limitGrt(), validarToken, async(req, res) => {
     if(!req.rateLimit) return; 
     console.log(req.rateLimit);
     let result;

@@ -9,9 +9,8 @@ const conexionDB = await conexion();
 const crearToken = async (req, res) => {
     const encoder = new TextEncoder();
     const roles = {
-        medico: ["cita", "medico"],
-        usuario: ["cita", "usuario"],
-        administrador: ["cita", "usuario", "medico"]
+        trainer: ["incidencia"],
+        administrador: ["incidencia", "trainer"]
     };
 
     const rol = req.params.rol;
@@ -49,7 +48,7 @@ const validarToken = async (req, res, next) => {
         const urlParts = req.url.split("/");
         console.log("partes url:", urlParts[1]);
         
-        let coleccionIndex = urlParts.findIndex(part => part === "cita" || part === "medico" || part === "usuario");
+        let coleccionIndex = urlParts.findIndex(part => part === "incidencia" || part === "trainer");
 
         if (coleccionIndex === -1) {
             return res.status(400).json({ mensaje: "Colección no encontrada en la URL" });

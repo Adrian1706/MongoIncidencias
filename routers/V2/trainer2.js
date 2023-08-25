@@ -1,12 +1,13 @@
 import { Router } from "express";
 import { conexion } from "../../db/atlas.js";
 import { limitGrt } from "../../limit/config.js";
+import { validarToken } from "../../limit/token.js";
 
 let trainer2 = Router();
 
 let db = await conexion();
 
-trainer2.get("/", limitGrt(), async(req, res)=>{
+trainer2.get("/trainer", limitGrt(), validarToken, async(req, res)=>{
     if(!req.rateLimit) return; 
     console.log(req.rateLimit);
     let trainers =  db.collection("trainer");
@@ -15,7 +16,16 @@ trainer2.get("/", limitGrt(), async(req, res)=>{
 
 });
 
-trainer2.get("/:Id_trainer", limitGrt(), async (req, res) => {
+trainer2.get("/incidencia", limitGrt(), validarToken, async(req, res)=>{
+    if(!req.rateLimit) return; 
+    console.log(req.rateLimit);
+    let incidencias =  db.collection("incidencia");
+    let result = await incidencias.find({}).toArray();
+    res.send(result);
+
+});
+
+trainer2.get("/trainer/:Id_trainer", limitGrt(), validarToken, async (req, res) => {
     if(!req.rateLimit) return; 
     console.log(req.rateLimit);
     try {
@@ -39,7 +49,7 @@ trainer2.get("/:Id_trainer", limitGrt(), async (req, res) => {
     }
 });
 
-trainer2.post("/", limitGrt(), async(req, res) => {
+trainer2.post("/trainer", limitGrt(), validarToken, async(req, res) => {
     if(!req.rateLimit) return; 
     console.log(req.rateLimit);
     let result;
@@ -54,7 +64,7 @@ trainer2.post("/", limitGrt(), async(req, res) => {
 });
 
 
-trainer2.put("/:Id_trainer", limitGrt(), async(req, res)=>{
+trainer2.put("/trainer/:Id_trainer", limitGrt(), validarToken, async(req, res)=>{
     if(!req.rateLimit) return; 
     console.log(req.rateLimit);
     const Id_trainer = parseInt(req.params.Id_trainer);
@@ -76,7 +86,7 @@ trainer2.put("/:Id_trainer", limitGrt(), async(req, res)=>{
     }
 });
 
-trainer2.delete("/:Id_trainer", limitGrt(), async(req, res)=>{
+trainer2.delete("/trainer/:Id_trainer", limitGrt(), validarToken, async(req, res)=>{
     if(!req.rateLimit) return; 
     console.log(req.rateLimit);
      

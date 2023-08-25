@@ -91,3 +91,27 @@ db.incidencia.insertMany([
     reportó_trainer: "Carlos"
   }
 ]);
+
+db.createCollection("roles", {
+  validator: {
+    $jsonSchema: {
+      bsonType: "object",
+      required: ["nombre_rol", "acceso_rol"],
+      properties: {
+        nombre_rol: { bsonType: "string" },
+        acceso_rol: { bsonType: "array", items: { bsonType: "string" } }
+      }
+    }
+  }
+})
+
+db.roles.insertMany([
+{
+  nombre_rol: "trainer",
+  acceso_rol: ["incidencia"]
+},
+{
+  nombre_rol: "administrador",
+  acceso_rol: ["trainer", "incidencia"]
+},
+]);

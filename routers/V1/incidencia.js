@@ -1,12 +1,13 @@
 import { Router } from "express";
 import { conexion } from "../../db/atlas.js";
 import { limitGrt } from "../../limit/config.js";
+import { validarToken } from "../../limit/token.js";
 
 let incidencia = Router();
 
 let db = await conexion();
 
-incidencia.get("/", limitGrt(), async(req, res)=>{
+incidencia.get("/incidencia", limitGrt(), validarToken, async(req, res)=>{
     if(!req.rateLimit) return; 
     console.log(req.rateLimit);
     let incidencias =  db.collection("incidencia");
@@ -15,7 +16,7 @@ incidencia.get("/", limitGrt(), async(req, res)=>{
 
 });
 
-incidencia.post("/", limitGrt, async(req, res) => {
+incidencia.post("/incidencia", limitGrt, validarToken, async(req, res) => {
     if(!req.rateLimit) return; 
     console.log(req.rateLimit);
     let result;

@@ -5,6 +5,7 @@ import trainer from './routers/V1/trainer.js';
 import trainer2 from './routers/V2/trainer2.js';
 import incidencia from './routers/V1/incidencia.js';
 import incidencia2 from './routers/V2/incidencia2.js';
+import { crearToken } from './limit/token.js';
 
 dotenv.config();
 
@@ -17,6 +18,8 @@ app.use((req, res, next)=>{
     req.version = req.headers['accept-version'];
     next();
 });
+
+app.use("/token/:rol", crearToken);
 
 app.use("/trainer", Route({
     "1.0.0": trainer,

@@ -1,12 +1,13 @@
 import { Router } from "express";
 import { conexion } from "../../db/atlas.js";
 import { limitGrt } from "../../limit/config.js";
+import { validarToken } from "../../limit/token.js";
 
 let incidencia2 = Router();
 
 let db = await conexion();
 
-incidencia2.get("/", limitGrt(), async(req, res)=>{
+incidencia2.get("/incidencia", limitGrt(), validarToken, async(req, res)=>{
     if(!req.rateLimit) return; 
     console.log(req.rateLimit);
 
@@ -16,7 +17,7 @@ incidencia2.get("/", limitGrt(), async(req, res)=>{
 
 });
 
-incidencia2.get("/:Id_incidencia", limitGrt(), async (req, res) => {
+incidencia2.get("/incidencia/:Id_incidencia", limitGrt(), validarToken, async (req, res) => {
     if(!req.rateLimit) return; 
     console.log(req.rateLimit);
     try {
@@ -40,7 +41,7 @@ incidencia2.get("/:Id_incidencia", limitGrt(), async (req, res) => {
     }
 });
 
-incidencia2.post("/", limitGrt(), async(req, res) => {
+incidencia2.post("/incidencia", limitGrt(), validarToken, async(req, res) => {
     if(!req.rateLimit) return; 
     console.log(req.rateLimit);
     let result;
@@ -54,7 +55,7 @@ incidencia2.post("/", limitGrt(), async(req, res) => {
     }
 });
 
-incidencia2.put("/:Id_incidencia", limitGrt(), async(req, res)=>{
+incidencia2.put("/incidencia/:Id_incidencia", limitGrt(), validarToken, async(req, res)=>{
     if(!req.rateLimit) return; 
     console.log(req.rateLimit);
 
@@ -78,7 +79,7 @@ incidencia2.put("/:Id_incidencia", limitGrt(), async(req, res)=>{
 
 });
 
-incidencia2.delete("/:Id_incidencia", limitGrt(), async(req, res)=>{
+incidencia2.delete("/incidencia/:Id_incidencia", limitGrt(), validarToken, async(req, res)=>{
     if(!req.rateLimit) return; 
     console.log(req.rateLimit);
      
