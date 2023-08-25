@@ -67,6 +67,28 @@ incidencia2.put("/:Id_incidencia", async(req, res)=>{
         res.status(500).send("Error interno del servidor");
     }
 
-})
+});
+
+incidencia2.delete("/:Id_incidencia", async(req, res)=>{
+     
+    const Id_incidencia = parseInt(req.params.Id_incidencia);
+
+    try {
+        const db = await conexion();
+        const incidencias = db.collection("incidencia");
+        const result = await incidencias.deleteOne({ Id_incidencia });
+
+        if (result.deletedCount === 1) {
+            res.send("Incidedncia eliminada correctamente");
+        } else {
+            res.status(404).send("Incidencia no encontrada");
+        }
+    } catch (error) {
+        console.error("Error al eliminar la incidencia:", error);
+        res.status(500).send("Error interno del servidor");
+    }
+
+
+});
 
 export default incidencia2;
