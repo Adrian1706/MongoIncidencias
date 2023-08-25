@@ -13,6 +13,28 @@ trainer2.get("/", async(req, res)=>{
 
 });
 
+trainer2.get("/:Id_trainer", async (req, res) => {
+    try {
+        const trainers = db.collection("trainer");
+        if (req.params.Id_trainer) { 
+            const idTrainer = parseInt(req.params.Id_trainer);
+            const result = await trainers.findOne({ Id_trainer: idTrainer });
+
+            if (result) {
+                res.send(result);
+            } else {
+                res.status(404).send("Trainer no encontrado");
+            }
+        } else {
+            const alltrainers = await trainers.find().toArray();
+            res.send(alltrainers);
+        }
+    } catch (error) {
+        console.error("Error al obtener las trainers:", error);
+        res.status(500).send("Error interno del servidor");
+    }
+});
+
 trainer2.post("/", async(req, res) => {
     let result;
     let trainers =  db.collection("trainer");
