@@ -1,19 +1,23 @@
 import { Router } from "express";
 import { conexion } from "../../db/atlas.js";
+import { limitGrt } from "../../limit/config.js";
 
 let trainer2 = Router();
 
 let db = await conexion();
 
-trainer2.get("/", async(req, res)=>{
-
+trainer2.get("/", limitGrt(), async(req, res)=>{
+    if(!req.rateLimit) return; 
+    console.log(req.rateLimit);
     let trainers =  db.collection("trainer");
     let result = await trainers.find({}).toArray();
     res.send(result);
 
 });
 
-trainer2.get("/:Id_trainer", async (req, res) => {
+trainer2.get("/:Id_trainer", limitGrt(), async (req, res) => {
+    if(!req.rateLimit) return; 
+    console.log(req.rateLimit);
     try {
         const trainers = db.collection("trainer");
         if (req.params.Id_trainer) { 
@@ -35,7 +39,9 @@ trainer2.get("/:Id_trainer", async (req, res) => {
     }
 });
 
-trainer2.post("/", async(req, res) => {
+trainer2.post("/", limitGrt(), async(req, res) => {
+    if(!req.rateLimit) return; 
+    console.log(req.rateLimit);
     let result;
     let trainers =  db.collection("trainer");
     try {
@@ -48,7 +54,9 @@ trainer2.post("/", async(req, res) => {
 });
 
 
-trainer2.put("/:Id_trainer", async(req, res)=>{
+trainer2.put("/:Id_trainer", limitGrt(), async(req, res)=>{
+    if(!req.rateLimit) return; 
+    console.log(req.rateLimit);
     const Id_trainer = parseInt(req.params.Id_trainer);
     const newData = req.body; 
 
@@ -68,7 +76,9 @@ trainer2.put("/:Id_trainer", async(req, res)=>{
     }
 });
 
-trainer2.delete("/:Id_trainer", async(req, res)=>{
+trainer2.delete("/:Id_trainer", limitGrt(), async(req, res)=>{
+    if(!req.rateLimit) return; 
+    console.log(req.rateLimit);
      
     const Id_trainer = parseInt(req.params.Id_trainer);
 

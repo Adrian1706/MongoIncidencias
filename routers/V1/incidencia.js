@@ -1,19 +1,23 @@
 import { Router } from "express";
 import { conexion } from "../../db/atlas.js";
+import { limitGrt } from "../../limit/config.js";
 
 let incidencia = Router();
 
 let db = await conexion();
 
-incidencia.get("/", async(req, res)=>{
-
+incidencia.get("/", limitGrt(), async(req, res)=>{
+    if(!req.rateLimit) return; 
+    console.log(req.rateLimit);
     let incidencias =  db.collection("incidencia");
     let result = await incidencias.find({}).toArray();
     res.send(result);
 
 });
 
-incidencia.post("/", async(req, res) => {
+incidencia.post("/", limitGrt, async(req, res) => {
+    if(!req.rateLimit) return; 
+    console.log(req.rateLimit);
     let result;
     let incidencias =  db.collection("incidencia");
     try {

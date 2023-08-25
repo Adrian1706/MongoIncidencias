@@ -1,11 +1,14 @@
 import { Router } from "express";
 import { conexion } from "../../db/atlas.js";
+import { limitGrt } from "../../limit/config.js";
 
 let incidencia2 = Router();
 
 let db = await conexion();
 
-incidencia2.get("/", async(req, res)=>{
+incidencia2.get("/", limitGrt(), async(req, res)=>{
+    if(!req.rateLimit) return; 
+    console.log(req.rateLimit);
 
     let incidencias =  db.collection("incidencia");
     let result = await incidencias.find({}).toArray();
@@ -13,7 +16,9 @@ incidencia2.get("/", async(req, res)=>{
 
 });
 
-incidencia2.get("/:Id_incidencia", async (req, res) => {
+incidencia2.get("/:Id_incidencia", limitGrt(), async (req, res) => {
+    if(!req.rateLimit) return; 
+    console.log(req.rateLimit);
     try {
         const incidencia = db.collection("incidencia");
         if (req.params.Id_incidencia) { 
@@ -35,7 +40,9 @@ incidencia2.get("/:Id_incidencia", async (req, res) => {
     }
 });
 
-incidencia2.post("/", async(req, res) => {
+incidencia2.post("/", limitGrt(), async(req, res) => {
+    if(!req.rateLimit) return; 
+    console.log(req.rateLimit);
     let result;
     let incidencias =  db.collection("incidencia");
     try {
@@ -47,7 +54,9 @@ incidencia2.post("/", async(req, res) => {
     }
 });
 
-incidencia2.put("/:Id_incidencia", async(req, res)=>{
+incidencia2.put("/:Id_incidencia", limitGrt(), async(req, res)=>{
+    if(!req.rateLimit) return; 
+    console.log(req.rateLimit);
 
     const Id_incidencia = parseInt(req.params.Id_incidencia);
     const newData = req.body; 
@@ -69,7 +78,9 @@ incidencia2.put("/:Id_incidencia", async(req, res)=>{
 
 });
 
-incidencia2.delete("/:Id_incidencia", async(req, res)=>{
+incidencia2.delete("/:Id_incidencia", limitGrt(), async(req, res)=>{
+    if(!req.rateLimit) return; 
+    console.log(req.rateLimit);
      
     const Id_incidencia = parseInt(req.params.Id_incidencia);
 
